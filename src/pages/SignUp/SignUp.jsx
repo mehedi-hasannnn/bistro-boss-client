@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const SignUp = () => {
     const axiosPublic = useAxiosPublic();
@@ -101,6 +102,11 @@ const SignUp = () => {
             <input type="submit" className="btn btn-primary" value="Register" />
         </div>
       </form>
+
+      <div className='flex justify-center'>
+        <SocialLogin></SocialLogin>
+      </div>
+
       <p className='text-center mb-4'><small>Already got an account? <Link to="/login">Login</Link> </small></p>
     </div>
   </div>

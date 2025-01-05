@@ -1,18 +1,37 @@
 import React from 'react';
-import { FaCalendar, FaHome, FaList, FaShoppingCart } from 'react-icons/fa';
+import { FaBook, FaCalendar, FaHome, FaList, FaShoppingCart, FaUser, FaUsers, FaUtensils } from 'react-icons/fa';
 import { MdOutlineReviews } from "react-icons/md";
 import { MdRestaurantMenu } from "react-icons/md";
+import { MdContactEmergency } from "react-icons/md";
 import { NavLink, Outlet } from 'react-router-dom';
 import useCart from '../Hooks/useCart';
 
 const Dashboard = () => {
     const [cart] = useCart();
 
+    // TODO: get isAdmin value from the database
+    const isAdmin = true;
     return (
         <div className='flex'>
             <div className="w-64 min-h-screen bg-yellow-600">
                 <ul className="menu p-4">
-                    <li><NavLink to="/dashboard/userHome"> <FaHome></FaHome> User Home</NavLink> </li>
+                    {
+                        isAdmin ? <>
+
+                    <li><NavLink to="/dashboard/adminHome"> <FaHome></FaHome> Admin Home</NavLink> </li>
+                    
+                    <li><NavLink to="/dashboard/addItems"> <FaUtensils></FaUtensils> Add Items </NavLink> </li>
+
+                    <li><NavLink to="/dashboard/manageItems">  <FaList></FaList>  Manage Items</NavLink> </li>
+
+                    <li><NavLink to="/dashboard/bookings">  <FaBook></FaBook>  Manage Bookings</NavLink> </li>
+                    
+                    <li><NavLink to="/dashboard/users">  <FaUsers></FaUsers> All Users</NavLink> </li>
+                        
+                        </>
+                        :
+                        <>
+                        <li><NavLink to="/dashboard/userHome"> <FaHome></FaHome> User Home</NavLink> </li>
                     
                     <li><NavLink to="/dashboard/reservation"> <FaCalendar></FaCalendar> Reservation</NavLink> </li>
 
@@ -21,10 +40,15 @@ const Dashboard = () => {
                     <li><NavLink to="/dashboard/review">  <MdOutlineReviews />  Add Review</NavLink> </li>
                     
                     <li><NavLink to="/dashboard/bookings">  <FaList></FaList>  My Bookings</NavLink> </li>
+                        </>
+                    }
+
+                    {/* Shared Navlinks */}
                     <div className="divider"></div>
 
                     <li><NavLink to="/"> <FaHome></FaHome> Home</NavLink> </li>
                     <li><NavLink to="/order/salad"> <MdRestaurantMenu /> Menu </NavLink> </li>
+                    <li><NavLink to="/order/contact"> <MdContactEmergency /> Contact </NavLink> </li>
                 </ul>
             </div>
             {/* Dashboard content */}
