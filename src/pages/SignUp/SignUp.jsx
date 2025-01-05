@@ -6,8 +6,10 @@ import Lottie from 'lottie-react';
 import { Helmet } from 'react-helmet';
 import { AuthContext } from '../../providers/AuthProvider';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic();
     const { register, handleSubmit, reset, formState: {errors} } = useForm();
     const {createUser, updateUserProfile} = useContext(AuthContext);
     const navigate = useNavigate();
@@ -21,15 +23,27 @@ const SignUp = () => {
             updateUserProfile(data.name, data.photoURL)
             .then(()=>{
                 console.log('User profile info updated')
-                reset();
-                Swal.fire({
-                    position: "top",
-                    icon: "success",
-                    title: "User Registered Successfully",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-                  navigate('/login');
+                // create user entry in the database
+                const userInfo = {
+                  name: data.name,
+                  email: data.email
+                }
+                axiosPublic.post('/users', userInfo)
+                .then(res =>{
+                  if(res.data.insertedId){
+                    console.log('User added to the database')
+                    reset();
+                    Swal.fire({
+                        position: "top",
+                        icon: "success",
+                        title: "User Registered Successfully",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                      navigate('/login');
+                  }
+                })
+               
             })
             .catch(error=> console.log(error))
         })
