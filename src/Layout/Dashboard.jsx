@@ -5,12 +5,13 @@ import { MdRestaurantMenu } from "react-icons/md";
 import { MdContactEmergency } from "react-icons/md";
 import { NavLink, Outlet } from 'react-router-dom';
 import useCart from '../Hooks/useCart';
+import useAdmin from '../Hooks/useAdmin';
 
 const Dashboard = () => {
     const [cart] = useCart();
 
     // TODO: get isAdmin value from the database
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
     return (
         <div className='flex'>
             <div className="w-64 min-h-screen bg-yellow-600">
