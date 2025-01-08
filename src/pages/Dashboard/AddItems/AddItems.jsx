@@ -28,7 +28,7 @@ const onSubmit = async (data) => {
             category: data.category,
             price: data.price,
             recipe: data.recipe,
-            image: data.display_url
+            image: res.data.data.display_url,
         }
         // Now 
         const menuRes = await axiosSecure.post('/menu', menuItem)
