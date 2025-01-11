@@ -7,64 +7,68 @@ export const AuthContext = createContext(null);
 
 const auth = getAuth(app);
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const googleProvider = new GoogleAuthProvider();
     const axiosPublic = useAxiosPublic();
 
-    const createUser = (email, password) =>{
+    const createUser = (email, password) => {
         setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password)
-    }
+        return createUserWithEmailAndPassword(auth, email, password);
+    };
 
-    const signIn = (email, password) =>{
+    const signIn = (email, password) => {
         setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
-    }
+    };
 
-    const googleSignIn = () =>{
+    const googleSignIn = () => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
-    }
+    };
 
-    const logOut = () =>{
+    const logOut = () => {
         setLoading(true);
         return signOut(auth);
-    }
+    };
 
-    const updateUserProfile = (name, photo) =>{
-       return updateProfile(auth.currentUser, {
+    const updateUserProfile = (name, photo) => {
+        return updateProfile(auth.currentUser, {
             displayName: name, photoURL: photo
-          })
-    }
+        });
+    };
 
-    useEffect(()=>{
-    const unsubscribe = onAuthStateChanged(auth, currentUser =>{
-            setUser(currentUser);
-            if(currentUser){
-                // get token and store client
-                const userInfo = {email: currentUser.email};
-                axiosPublic.post('/jwt', userInfo)
-                .then(res=>{
-                    if(res.data.token){
-                        localStorage.setItem('access-token', res.data.token);
-                        setLoading(false);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            setLoading(true); // Ensure loading is set while we process everything
+
+            if (currentUser) {
+                try {
+                    // Call your API to get the token
+                    const userInfo = { email: currentUser.email };
+                    const response = await axiosPublic.post('/jwt', userInfo);
+
+                    // If a token is received, store it and set the user state
+                    if (response.data.token) {
+                        localStorage.setItem('access-token', response.data.token);
+                        setUser(currentUser);  // Only set the user after the token is saved
                     }
-                })
-            }
-            else{
-                // TODO: remove token(if token stored in the client side:local storage)
+                } catch (error) {
+                    console.error("Error fetching token:", error);
+                }
+            } else {
+                // Remove token and set user to null if the user is logged out
                 localStorage.removeItem('access-token');
-                setLoading(false);
-
+                setUser(null);
             }
-            
-        })
-        return () =>{
-            return unsubscribe();
-        }
-    }, [axiosPublic])
+
+            setLoading(false);  // Set loading to false once processing is done
+        });
+
+        // Clean up subscription when the component unmounts
+        return () => unsubscribe();
+    }, [axiosPublic]);
 
     const authInfo = {
         user,
@@ -74,7 +78,7 @@ const AuthProvider = ({children}) => {
         logOut,
         updateUserProfile,
         googleSignIn
-    }
+    };
 
     return (
         <AuthContext.Provider value={authInfo}>
