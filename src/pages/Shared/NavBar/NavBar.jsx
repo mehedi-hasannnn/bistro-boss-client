@@ -71,7 +71,7 @@ const NavBar = () => {
 
       </ul>
     </div>
-    <a href='/' className="btn btn-ghost text-xl">Bistro Boss</a>
+    <a href='/' className="btn btn-ghost text-xl">Flavor Heaven</a>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
@@ -79,8 +79,20 @@ const NavBar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
-  </div>
+  {
+    user?.photoURL && (
+      <div className="tooltip tooltip-left" data-tip={user.displayName || 'User'}>
+        <img 
+          src={user?.photoURL} 
+          alt="User Avatar" 
+          className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover"
+          referrerPolicy="no-referrer"
+        />
+      </div>
+    )
+  }
+</div>
+
 </div>   
         </>
     );

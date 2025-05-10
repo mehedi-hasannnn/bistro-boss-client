@@ -21,7 +21,7 @@ const Menu = () => {
     return (
         <div>
             <Helmet>
-                <title>Bistro | Menu</title>
+                <title>Flavor Heaven | Menu</title>
             </Helmet>
             <Cover img={menuImg} title="Our Menu"></Cover>
             {/* Main cover */}

@@ -53,7 +53,7 @@ const SignUp = () => {
     return (
    <>
    <Helmet>
-    <title>Bistro boss | Register</title>
+    <title>Flavor Heaven | Register</title>
    </Helmet>
         <div className="hero bg-base-200 min-h-screen">
   <div className="hero-content flex-col lg:flex-row-reverse">
