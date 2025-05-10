@@ -1,4 +1,6 @@
-# React + Vite
+# Live site link
+
+https://bistro-boss-780b7.web.app/
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
